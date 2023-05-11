@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  frontend:
+    build: ./insta-front
+    container_name: frontend
+    restart: unless-stopped
+    networks:
+      - insta
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: learn-docker-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - frontend
+    networks:
+      - insta
+
+volumes:
+  mongodb_api:
+
+networks:
+  insta:
+    driver: bridge
